@@ -17,7 +17,7 @@ services:
         sync: false # Set this in Render dashboard
         
   # Frontend Static Site
-  - type: static
+  - type: web
     name: rolewise-frontend
     rootDir: frontend
     buildCommand: npm install && npm run build
