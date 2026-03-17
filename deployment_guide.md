@@ -37,5 +37,18 @@ While Render is building, you need to set the Database link:
 - Open the Chatbot and ask a question. It will now fetch knowledge from your deployed backend!
 
 ## Troubleshooting
+
+### "Page Not Found" on /admin
+If you receive a 404 error when navigating to `/admin` or refreshing the page on Render:
+1. Go to your **Static Site** settings in Render dashboard.
+2. Navigate to **Redirects/Rewrites**.
+3. Add a new rule:
+   - **Source**: `/*`
+   - **Destination**: `/index.html`
+   - **Action**: `Rewrite`
+4. This ensures that React Router handles the navigation instead of the server looking for a file.
+
+### CORS Errors
+Ensure your Backend URL in Render dashboard matches what you have in the frontend's `VITE_API_URL`. The backend must also allow the frontend's domain.
 - **Backend logs**: If the chatbot doesn't answer, check the backend logs in Render for MongoDB connection errors.
 - **CORS**: I have already enabled CORS in `index.js`, so the frontend should be allowed to talk to the backend automatically.
