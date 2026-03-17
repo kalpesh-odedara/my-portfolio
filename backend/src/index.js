@@ -21,7 +21,14 @@ if (!MONGODB_URI || MONGODB_URI.includes('<username>') || MONGODB_URI.includes('
     .catch((err) => console.error('MongoDB connection error:', err));
 }
 
-app.use(cors()); // In production, consider limiting to frontend URL
+app.use(cors({
+  origin: [
+    "https://kalpesh-portfolio-web.onrender.com",
+   
+    "http://localhost:5173"
+  ],
+  credentials: true
+})); // In production, consider limiting to frontend URL
 app.use(express.json());
 
 app.use('/api', projectRoutes);
