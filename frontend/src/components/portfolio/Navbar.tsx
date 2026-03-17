@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Certificates", href: "#certificates" },
-  { name: "Achievements", href: "#achievements" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/#home", isAnchor: true },
+  { name: "About", href: "/#about", isAnchor: true },
+  { name: "Skills", href: "/#skills", isAnchor: true },
+  { name: "Projects", href: "/#projects", isAnchor: true },
+  { name: "Bhautik", href: "/bhautik", isAnchor: false },
+  { name: "Certificates", href: "/#certificates", isAnchor: true },
+  { name: "Contact", href: "/#contact", isAnchor: true },
 ];
 
 export const Navbar = () => {
@@ -24,16 +25,28 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNav = (href: string, isAnchor: boolean) => {
     setIsOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (isAnchor) {
+      if (location.pathname !== "/") {
+        navigate(href);
+      } else {
+        const id = href.replace("/", "");
+        document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate(href);
+    }
   };
 
   return (
     <nav className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300", scrolled ? "glass shadow-lg" : "bg-transparent")}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <button onClick={() => scrollTo("#home")} className="font-mono text-xl font-bold text-primary tracking-tighter hover:scale-105 transition-transform">
+          <button onClick={() => handleNav("/#home", true)} className="font-mono text-xl font-bold text-primary tracking-tighter hover:scale-105 transition-transform">
             {"<KO />"}
           </button>
 
@@ -41,7 +54,7 @@ export const Navbar = () => {
             {navLinks.map((link) => (
               <button
                 key={link.href}
-                onClick={() => scrollTo(link.href)}
+                onClick={() => handleNav(link.href, link.isAnchor)}
                 className="px-4 py-2 text-[13px] font-semibold text-muted-foreground hover:text-primary transition-all rounded-full hover:bg-primary/5"
               >
                 {link.name}
@@ -50,7 +63,7 @@ export const Navbar = () => {
           </div>
 
           <div className="hidden lg:block">
-            <Button variant="hero" size="sm" onClick={() => scrollTo("#contact")} className="rounded-full px-6">
+            <Button variant="hero" size="sm" onClick={() => handleNav("/#contact", true)} className="rounded-full px-6">
               Let's Talk
             </Button>
           </div>
@@ -80,16 +93,21 @@ export const Navbar = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  onClick={() => scrollTo(link.href)}
+                  onClick={() => handleNav(link.href, link.isAnchor)}
                   className="w-full text-center px-6 py-4 rounded-2xl text-base font-bold text-foreground hover:text-primary hover:bg-primary/10 transition-all border border-transparent hover:border-primary/10"
                 >
                   {link.name}
                 </motion.button>
               ))}
               <div className="pt-4 px-2">
-                <Button variant="hero" className="w-full py-6 rounded-2xl text-lg font-bold" onClick={() => scrollTo("#contact")}>
-                  Let's Talk
+                <Button variant="hero" className="w-full py-6 rounded-2xl text-lg font-bold" onClick={() => handleNav("/#contact", true)}>
+                   Let's Talk
                 </Button>
+                <div className="flex justify-center mt-4 opacity-30 hover:opacity-100 transition-opacity">
+                   <Link to="/admin" onClick={() => setIsOpen(false)} className="text-[10px] flex items-center gap-1 text-muted-foreground">
+                      <Shield className="h-3 w-3" /> Admin
+                   </Link>
+                </div>
               </div>
             </div>
           </motion.div>
