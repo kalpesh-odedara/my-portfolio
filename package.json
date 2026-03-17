@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run dev:all",
+    "start": "npm run start vite",
     "dev:all": "npm run dev:frontend & npm run dev:backend",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
