@@ -17,7 +17,7 @@ services:
         sync: false # Set this in Render dashboard
         
   # Frontend Static Site
-  - type: static
+  - type: static_site
     name: rolewise-frontend
     env: static
     rootDir: frontend
