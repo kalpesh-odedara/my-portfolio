@@ -17,9 +17,8 @@ services:
         sync: false # Set this in Render dashboard
         
   # Frontend Static Site
-  - type: static_site
+  - type: static
     name: rolewise-frontend
-    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     publishDir: dist
@@ -28,7 +27,7 @@ services:
         fromService:
           name: rolewise-backend
           type: web
-          property: host
+          property: url
     routes:
       - type: rewrite
         source: /*
