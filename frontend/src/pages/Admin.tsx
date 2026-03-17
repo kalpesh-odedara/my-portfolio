@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface Contact {
   _id: string;
-  name: string;
+  name: string; 
   email: string;
   company?: string;
   message: string;
