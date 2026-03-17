@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface Contact {
   _id: string;
-  name: string; 
+  name: string;
   email: string;
   company?: string;
   message: string;
@@ -51,7 +51,7 @@ const Admin = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contacts/${id}`, { method: 'DELETE' });
+      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/contacts/${id}`, { method: 'DELETE' });
       if (!resp.ok) throw new Error();
       toast({ title: "Message deleted" });
       queryClient.invalidateQueries({ queryKey: ["admin-contacts"] });
@@ -62,7 +62,7 @@ const Admin = () => {
 
   const handleUpdate = async (id: string, data: Partial<Contact>) => {
     try {
-      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contacts/${id}`, {
+      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/contacts/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -136,7 +136,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0c] text-foreground p-6 md:p-12">
       <div className="absolute inset-0 mesh-gradient opacity-10 pointer-events-none" />
-      
+
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12">
           <div>
@@ -148,26 +148,26 @@ const Admin = () => {
             <p className="text-muted-foreground text-sm mt-1">Manage incoming inquiries and professional leads.</p>
           </div>
           <div className="flex gap-3">
-             <Button variant="outline" size="sm" onClick={() => setIsLoggedIn(false)} className="bg-white/5 border-white/10 hover:bg-white/10">
-                <LogOut className="h-4 w-4 mr-2" /> Logout
-             </Button>
+            <Button variant="outline" size="sm" onClick={() => setIsLoggedIn(false)} className="bg-white/5 border-white/10 hover:bg-white/10">
+              <LogOut className="h-4 w-4 mr-2" /> Logout
+            </Button>
           </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-           {[
-             { label: "Total Leads", value: contacts?.length || 0, icon: Inbox },
-             { label: "Unread", value: contacts?.length || 0, icon: Clock },
-             { label: "Security Status", value: "Locked", icon: ShieldCheck },
-           ].map((stat) => (
-             <div key={stat.label} className="glass rounded-2xl p-6 border border-white/5 card-hover">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-mono text-muted-foreground">{stat.label}</p>
-                  <stat.icon className="h-4 w-4 text-primary opacity-50" />
-                </div>
-                <p className="text-3xl font-bold">{stat.value}</p>
-             </div>
-           ))}
+          {[
+            { label: "Total Leads", value: contacts?.length || 0, icon: Inbox },
+            { label: "Unread", value: contacts?.length || 0, icon: Clock },
+            { label: "Security Status", value: "Locked", icon: ShieldCheck },
+          ].map((stat) => (
+            <div key={stat.label} className="glass rounded-2xl p-6 border border-white/5 card-hover">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-mono text-muted-foreground">{stat.label}</p>
+                <stat.icon className="h-4 w-4 text-primary opacity-50" />
+              </div>
+              <p className="text-3xl font-bold">{stat.value}</p>
+            </div>
+          ))}
         </div>
 
         <div className="space-y-4">
@@ -178,117 +178,117 @@ const Admin = () => {
 
           <AnimatePresence mode="popLayout">
             {isLoading ? (
-               <div className="text-center py-20 opacity-50 font-mono text-sm animate-pulse">Scanning Database...</div>
+              <div className="text-center py-20 opacity-50 font-mono text-sm animate-pulse">Scanning Database...</div>
             ) : contacts?.length === 0 ? (
-               <div className="text-center py-20 glass rounded-3xl border border-dashed border-white/10 opacity-30 italic">No inquiries found yet.</div>
+              <div className="text-center py-20 glass rounded-3xl border border-dashed border-white/10 opacity-30 italic">No inquiries found yet.</div>
             ) : (
-                contacts?.map((contact, i) => (
-                  <motion.div
-                    key={contact._id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="glass rounded-2xl p-6 border border-white/5 group card-hover relative overflow-hidden"
-                  >
-                    {/* Action Bar */}
-                    <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                       <Button 
-                         variant="ghost" 
-                         size="icon" 
-                         className="h-8 w-8 text-muted-foreground hover:text-primary"
-                         onClick={() => {
-                           setReplyingId(contact._id);
-                           setReplyValue(contact.reply || "");
-                         }}
-                       >
-                          <Reply className="h-4 w-4" />
-                       </Button>
-                       <Button 
-                         variant="ghost" 
-                         size="icon" 
-                         className="h-8 w-8 text-muted-foreground hover:text-accent"
-                         onClick={() => {
-                           setEditingId(contact._id);
-                           setEditValue(contact.message);
-                         }}
-                       >
-                          <Edit3 className="h-4 w-4" />
-                       </Button>
-                       <Button 
-                         variant="ghost" 
-                         size="icon" 
-                         className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                         onClick={() => handleDelete(contact._id)}
-                       >
-                          <Trash2 className="h-4 w-4" />
-                       </Button>
-                    </div>
+              contacts?.map((contact, i) => (
+                <motion.div
+                  key={contact._id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="glass rounded-2xl p-6 border border-white/5 group card-hover relative overflow-hidden"
+                >
+                  {/* Action Bar */}
+                  <div className="absolute top-0 right-0 p-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-primary"
+                      onClick={() => {
+                        setReplyingId(contact._id);
+                        setReplyValue(contact.reply || "");
+                      }}
+                    >
+                      <Reply className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-accent"
+                      onClick={() => {
+                        setEditingId(contact._id);
+                        setEditValue(contact.message);
+                      }}
+                    >
+                      <Edit3 className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                      onClick={() => handleDelete(contact._id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
 
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
-                          {contact.name[0].toUpperCase()}
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-foreground">
-                            {contact.name}
-                            {contact.company && <span className="text-xs font-normal text-muted-foreground ml-2">({contact.company})</span>}
-                          </h3>
-                          <p className="text-xs text-primary/80 flex items-center gap-1.5">
-                            <Mail className="h-3 w-3" /> {contact.email}
-                          </p>
-                        </div>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
+                        {contact.name[0].toUpperCase()}
                       </div>
-                      <div className="text-[10px] font-mono text-muted-foreground flex items-center gap-2">
-                         <Clock className="h-3 w-3" /> {new Date(contact.date).toLocaleString()}
+                      <div>
+                        <h3 className="font-bold text-foreground">
+                          {contact.name}
+                          {contact.company && <span className="text-xs font-normal text-muted-foreground ml-2">({contact.company})</span>}
+                        </h3>
+                        <p className="text-xs text-primary/80 flex items-center gap-1.5">
+                          <Mail className="h-3 w-3" /> {contact.email}
+                        </p>
                       </div>
                     </div>
-
-                    <div className="space-y-4">
-                      {editingId === contact._id ? (
-                        <div className="space-y-2">
-                          <Textarea 
-                            value={editValue} 
-                            onChange={(e) => setEditValue(e.target.value)}
-                            className="bg-white/5 border-white/10 min-h-[100px]"
-                          />
-                          <div className="flex justify-end gap-2">
-                             <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>Cancel</Button>
-                             <Button size="sm" onClick={() => handleUpdate(contact._id, { message: editValue })}>Save Changes</Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="bg-white/5 rounded-xl p-4 text-sm text-muted-foreground leading-relaxed border border-white/5">
-                          {contact.message}
-                        </div>
-                      )}
-
-                      {/* Reply Section */}
-                      {replyingId === contact._id ? (
-                        <div className="space-y-2 border-l-2 border-primary/30 pl-4 mt-4">
-                          <p className="text-[10px] font-mono text-primary uppercase">Your Reply</p>
-                          <Textarea 
-                            value={replyValue} 
-                            onChange={(e) => setReplyValue(e.target.value)}
-                            placeholder="Type your response..."
-                            className="bg-primary/5 border-primary/20 min-h-[80px]"
-                          />
-                          <div className="flex justify-end gap-2">
-                             <Button size="sm" variant="ghost" onClick={() => setReplyingId(null)}>Cancel</Button>
-                             <Button size="sm" variant="hero" onClick={() => handleUpdate(contact._id, { reply: replyValue })}>Send Reply</Button>
-                          </div>
-                        </div>
-                      ) : contact.reply && (
-                        <div className="border-l-2 border-primary/30 pl-4 mt-4 py-1">
-                          <p className="text-[10px] font-mono text-primary uppercase mb-1">Reply Form Kalpesh</p>
-                          <p className="text-sm italic text-foreground/80">{contact.reply}</p>
-                        </div>
-                      )}
+                    <div className="text-[10px] font-mono text-muted-foreground flex items-center gap-2">
+                      <Clock className="h-3 w-3" /> {new Date(contact.date).toLocaleString()}
                     </div>
-                  </motion.div>
-                ))
+                  </div>
+
+                  <div className="space-y-4">
+                    {editingId === contact._id ? (
+                      <div className="space-y-2">
+                        <Textarea
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          className="bg-white/5 border-white/10 min-h-[100px]"
+                        />
+                        <div className="flex justify-end gap-2">
+                          <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>Cancel</Button>
+                          <Button size="sm" onClick={() => handleUpdate(contact._id, { message: editValue })}>Save Changes</Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-white/5 rounded-xl p-4 text-sm text-muted-foreground leading-relaxed border border-white/5">
+                        {contact.message}
+                      </div>
+                    )}
+
+                    {/* Reply Section */}
+                    {replyingId === contact._id ? (
+                      <div className="space-y-2 border-l-2 border-primary/30 pl-4 mt-4">
+                        <p className="text-[10px] font-mono text-primary uppercase">Your Reply</p>
+                        <Textarea
+                          value={replyValue}
+                          onChange={(e) => setReplyValue(e.target.value)}
+                          placeholder="Type your response..."
+                          className="bg-primary/5 border-primary/20 min-h-[80px]"
+                        />
+                        <div className="flex justify-end gap-2">
+                          <Button size="sm" variant="ghost" onClick={() => setReplyingId(null)}>Cancel</Button>
+                          <Button size="sm" variant="hero" onClick={() => handleUpdate(contact._id, { reply: replyValue })}>Send Reply</Button>
+                        </div>
+                      </div>
+                    ) : contact.reply && (
+                      <div className="border-l-2 border-primary/30 pl-4 mt-4 py-1">
+                        <p className="text-[10px] font-mono text-primary uppercase mb-1">Reply Form Kalpesh</p>
+                        <p className="text-sm italic text-foreground/80">{contact.reply}</p>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))
             )}
           </AnimatePresence>
         </div>
