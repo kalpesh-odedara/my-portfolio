@@ -85,7 +85,7 @@ export const ChatBot = () => {
     queryKey: ['chatbot-knowledge'],
     queryFn: async () => {
       try {
-             const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/knowledge`);
+             const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/knowledge`);
              if (!resp.ok) return { dataset: [], profile: { bio: "" } };
              return resp.json();
       } catch (e) {

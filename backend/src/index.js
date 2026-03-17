@@ -7,7 +7,7 @@ import projectRoutes from './routes/projectRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Update this with your MongoDB URI in .env file
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -24,8 +24,9 @@ if (!MONGODB_URI || MONGODB_URI.includes('<username>') || MONGODB_URI.includes('
 app.use(cors({
   origin: [
     "https://kalpesh-portfolio-web.onrender.com",
-   
-    "http://localhost:5173"
+    "https://rolewise-frontend.onrender.com",
+    "http://localhost:5173",
+    "http://localhost:3000"
   ],
   credentials: true
 })); // In production, consider limiting to frontend URL

@@ -42,7 +42,7 @@ const Admin = () => {
   const { data: contacts, isLoading } = useQuery<Contact[]>({
     queryKey: ["admin-contacts"],
     queryFn: async () => {
-      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contacts`);
+      const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/contacts`);
       if (!resp.ok) throw new Error("Failed to fetch");
       return resp.json();
     },
