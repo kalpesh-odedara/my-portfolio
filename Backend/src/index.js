@@ -26,8 +26,7 @@ app.use(cors({
     "https://kalpesh-portfolio-web.onrender.com",
     "https://rolewise-frontend.onrender.com",
     "http://localhost:5173",
-    "http://localhost:3000",
-    "http://localhost:5000"
+    "http://localhost:3000"
   ],
   credentials: true
 })); // In production, consider limiting to frontend URL
