@@ -104,7 +104,7 @@ export const Navbar = () => {
                    Let's Talk
                 </Button>
                 <div className="flex justify-center mt-4 opacity-30 hover:opacity-100 transition-opacity">
-                   <Link to="/admins" onClick={() => setIsOpen(false)} className="text-[10px] flex items-center gap-1 text-muted-foreground">
+                   <Link to="/admin" onClick={() => setIsOpen(false)} className="text-[10px] flex items-center gap-1 text-muted-foreground">
                       <Shield className="h-3 w-3" /> Admin
                    </Link>
                 </div>
