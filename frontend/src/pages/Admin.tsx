@@ -10,9 +10,10 @@ import { Link } from "react-router-dom";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Contact {
-  id: number;
+  _id: string;
   name: string;
   email: string;
+  company?: string;
   message: string;
   reply?: string;
   date: string;
@@ -21,8 +22,8 @@ interface Contact {
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [credentials, setCredentials] = useState({ id: "", password: "" });
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [replyingId, setReplyingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [replyingId, setReplyingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [replyValue, setReplyValue] = useState("");
   const { toast } = useToast();
@@ -48,7 +49,7 @@ const Admin = () => {
     enabled: isLoggedIn,
   });
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     try {
       const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contacts/${id}`, { method: 'DELETE' });
       if (!resp.ok) throw new Error();
@@ -59,7 +60,7 @@ const Admin = () => {
     }
   };
 
-  const handleUpdate = async (id: number, data: Partial<Contact>) => {
+  const handleUpdate = async (id: string, data: Partial<Contact>) => {
     try {
       const resp = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/contacts/${id}`, {
         method: 'PUT',
@@ -183,7 +184,7 @@ const Admin = () => {
             ) : (
                 contacts?.map((contact, i) => (
                   <motion.div
-                    key={contact.id}
+                    key={contact._id}
                     layout
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -198,7 +199,7 @@ const Admin = () => {
                          size="icon" 
                          className="h-8 w-8 text-muted-foreground hover:text-primary"
                          onClick={() => {
-                           setReplyingId(contact.id);
+                           setReplyingId(contact._id);
                            setReplyValue(contact.reply || "");
                          }}
                        >
@@ -209,7 +210,7 @@ const Admin = () => {
                          size="icon" 
                          className="h-8 w-8 text-muted-foreground hover:text-accent"
                          onClick={() => {
-                           setEditingId(contact.id);
+                           setEditingId(contact._id);
                            setEditValue(contact.message);
                          }}
                        >
@@ -219,7 +220,7 @@ const Admin = () => {
                          variant="ghost" 
                          size="icon" 
                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                         onClick={() => handleDelete(contact.id)}
+                         onClick={() => handleDelete(contact._id)}
                        >
                           <Trash2 className="h-4 w-4" />
                        </Button>
@@ -231,7 +232,10 @@ const Admin = () => {
                           {contact.name[0].toUpperCase()}
                         </div>
                         <div>
-                          <h3 className="font-bold text-foreground">{contact.name}</h3>
+                          <h3 className="font-bold text-foreground">
+                            {contact.name}
+                            {contact.company && <span className="text-xs font-normal text-muted-foreground ml-2">({contact.company})</span>}
+                          </h3>
                           <p className="text-xs text-primary/80 flex items-center gap-1.5">
                             <Mail className="h-3 w-3" /> {contact.email}
                           </p>
@@ -243,7 +247,7 @@ const Admin = () => {
                     </div>
 
                     <div className="space-y-4">
-                      {editingId === contact.id ? (
+                      {editingId === contact._id ? (
                         <div className="space-y-2">
                           <Textarea 
                             value={editValue} 
@@ -252,7 +256,7 @@ const Admin = () => {
                           />
                           <div className="flex justify-end gap-2">
                              <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>Cancel</Button>
-                             <Button size="sm" onClick={() => handleUpdate(contact.id, { message: editValue })}>Save Changes</Button>
+                             <Button size="sm" onClick={() => handleUpdate(contact._id, { message: editValue })}>Save Changes</Button>
                           </div>
                         </div>
                       ) : (
@@ -262,7 +266,7 @@ const Admin = () => {
                       )}
 
                       {/* Reply Section */}
-                      {replyingId === contact.id ? (
+                      {replyingId === contact._id ? (
                         <div className="space-y-2 border-l-2 border-primary/30 pl-4 mt-4">
                           <p className="text-[10px] font-mono text-primary uppercase">Your Reply</p>
                           <Textarea 
@@ -273,7 +277,7 @@ const Admin = () => {
                           />
                           <div className="flex justify-end gap-2">
                              <Button size="sm" variant="ghost" onClick={() => setReplyingId(null)}>Cancel</Button>
-                             <Button size="sm" variant="hero" onClick={() => handleUpdate(contact.id, { reply: replyValue })}>Send Reply</Button>
+                             <Button size="sm" variant="hero" onClick={() => handleUpdate(contact._id, { reply: replyValue })}>Send Reply</Button>
                           </div>
                         </div>
                       ) : contact.reply && (

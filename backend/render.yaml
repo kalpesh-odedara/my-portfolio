@@ -11,3 +11,5 @@ services:
         value: 5000
       - key: NODE_ENV
         value: production
+      - key: MONGODB_URI
+        sync: false # Set this in Render dashboard for security

@@ -32,12 +32,18 @@ export const ContactSection = () => {
         body: JSON.stringify(form),
       });
       
-      if (!response.ok) throw new Error("Failed to send message");
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.error || "Failed to send message");
       
       setShowSuccess(true);
       setForm({ name: "", email: "", message: "" });
-    } catch (error) {
-      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+    } catch (error: any) {
+      toast({ 
+        title: "Error", 
+        description: error.message || "Failed to send message. Please try again.", 
+        variant: "destructive" 
+      });
     } finally {
       setLoading(false);
     }

@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
+import Contact from '../models/Contact.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const KNOWLEDGE_PATH = path.join(__dirname, '../data/knowledge.json');
-const CONTACTS_PATH = path.join(__dirname, '../data/contacts.json');
 
 const projects = [
   { id: 1, name: 'DermAI', tech: ['React', 'Node', 'Python', 'MongoDB'], description: 'AI hospital management with skin detection, chatbot, voice control, mood analysis.' },
@@ -22,36 +23,42 @@ export const getProjects = (req, res) => {
 
 export const createContact = async (req, res) => {
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, company } = req.body;
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'name, email and message are required' });
     }
 
-    const contacts = JSON.parse(await fs.readFile(CONTACTS_PATH, 'utf8'));
-    const newContact = {
-      id: Date.now(),
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ 
+        error: 'Database connection is not ready. Please check your Backend/.env file and ensure MONGODB_URI is correct.' 
+      });
+    }
+
+    const newContact = new Contact({
       name,
       email,
       message,
-      date: new Date().toISOString()
-    };
+      company
+    });
     
-    contacts.push(newContact);
-    await fs.writeFile(CONTACTS_PATH, JSON.stringify(contacts, null, 2));
+    await newContact.save();
 
-    console.log('New lead persisted:', newContact);
-    res.json({ success: true, message: 'Contact submitted successfully' });
+    console.log('New lead persisted to MongoDB:', newContact);
+    res.json({ success: true, message: 'Contact submitted successfully', contact: newContact });
   } catch (error) {
+    console.error('Error saving contact:', error);
     res.status(500).json({ error: 'Failed to save contact' });
   }
 };
 
 export const getContacts = async (req, res) => {
   try {
-    const data = await fs.readFile(CONTACTS_PATH, 'utf8');
-    res.json(JSON.parse(data));
+    const contacts = await Contact.find().sort({ date: -1 });
+    res.json(contacts);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to read contact data' });
+    console.error('Error fetching contacts:', error);
+    res.status(500).json({ error: 'Failed to fetch contact data' });
   }
 };
 
@@ -84,12 +91,15 @@ export const updateKnowledge = async (req, res) => {
 export const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const contacts = JSON.parse(await fs.readFile(CONTACTS_PATH, 'utf8'));
-    const filtered = contacts.filter(c => c.id !== parseInt(id));
+    const result = await Contact.findByIdAndDelete(id);
     
-    await fs.writeFile(CONTACTS_PATH, JSON.stringify(filtered, null, 2));
+    if (!result) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+
     res.json({ success: true, message: 'Contact deleted' });
   } catch (error) {
+    console.error('Error deleting contact:', error);
     res.status(500).json({ error: 'Failed to delete contact' });
   }
 };
@@ -98,17 +108,22 @@ export const updateContact = async (req, res) => {
   try {
     const { id } = req.params;
     const { message, reply } = req.body;
-    const contacts = JSON.parse(await fs.readFile(CONTACTS_PATH, 'utf8'));
-    const index = contacts.findIndex(c => c.id === parseInt(id));
     
-    if (index === -1) return res.status(404).json({ error: 'Contact not found' });
+    const updateData = {};
+    if (message !== undefined) updateData.message = message;
+    if (reply !== undefined) updateData.reply = reply;
     
-    if (message !== undefined) contacts[index].message = message;
-    if (reply !== undefined) contacts[index].reply = reply;
+    const contact = await Contact.findByIdAndUpdate(
+      id, 
+      updateData, 
+      { new: true }
+    );
     
-    await fs.writeFile(CONTACTS_PATH, JSON.stringify(contacts, null, 2));
-    res.json({ success: true, contact: contacts[index] });
+    if (!contact) return res.status(404).json({ error: 'Contact not found' });
+    
+    res.json({ success: true, contact });
   } catch (error) {
+    console.error('Error updating contact:', error);
     res.status(500).json({ error: 'Failed to update contact' });
   }
 };
