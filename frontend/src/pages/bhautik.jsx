@@ -6,4 +6,4 @@ function bhautik() {
     )
 }
 
-export default bhautik
+export default bhautik     
