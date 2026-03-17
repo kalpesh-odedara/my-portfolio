@@ -15,10 +15,11 @@ services:
         value: production
       - key: MONGODB_URI
         sync: false # Set this in Render dashboard
-        
+
+staticSites:
   # Frontend Static Site
-  - type: static
-    name: rolewise-frontend
+  - name: rolewise-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     publishDir: dist
