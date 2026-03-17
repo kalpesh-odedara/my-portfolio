@@ -25,12 +25,15 @@
     "strict": false,
     "target": "ES2020",
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "vite/client"
     ],
     "useDefineForClassFields": true
   },
   "include": [
-    "frontend/legacy-src",
-    "frontend/src"
+    "legacy-src",
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ]
 }
