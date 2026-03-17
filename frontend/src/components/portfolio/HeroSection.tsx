@@ -157,7 +157,7 @@ export const HeroSection = () => {
               </a>
               
               <a 
-                href="https://linkedin.com/in/kalpesh-odedara" 
+                href="https://www.linkedin.com/in/kalpesh-odedara-a056a6320?utm_source=share_via&utm_content=profile&utm_medium=member_android" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="group relative flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 transition-all shadow-glow-subtle hover:shadow-glow-primary"

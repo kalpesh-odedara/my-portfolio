@@ -36,8 +36,8 @@ export const AboutSection = () => (
 
       <ScrollReveal>
         <div className="text-center">
-          <a href="https://linkedin.com/in/kalpesh-odedara" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors text-sm font-medium">
-            <Linkedin className="h-4 w-4" /> linkedin.com/in/kalpesh-odedara
+          <a href="https://www.linkedin.com/in/kalpesh-odedara-a056a6320?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors text-sm font-medium">
+            <Linkedin className="h-4 w-4" /> linkedin.com/in/kalpesh-odedara-a056a6320
           </a>
         </div>
       </ScrollReveal>
