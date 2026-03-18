@@ -10,7 +10,6 @@ const navLinks = [
   { name: "About", href: "/#about", isAnchor: true },
   { name: "Skills", href: "/#skills", isAnchor: true },
   { name: "Projects", href: "/#projects", isAnchor: true },
-  { name: "Bhautik", href: "/bhautik", isAnchor: false },
   { name: "Certificates", href: "/#certificates", isAnchor: true },
   { name: "Contact", href: "/#contact", isAnchor: true },
 ];

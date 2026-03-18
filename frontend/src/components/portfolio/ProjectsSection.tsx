@@ -54,7 +54,7 @@ const otherProjects = [
     description:
       "A full-featured furniture e-commerce website with product catalogue, category browsing, shopping cart, and order management built on the ASP.NET platform.",
     tech: ["ASP.NET", "C#", "SQL Server", "HTML", "CSS", "Bootstrap"],
-    github: "https://github.com/kalpesh-odedara/Furniture_Shop.git",
+    github: "https://github.com/kalpesh-odedara/Furniture-Shop.git",
     color: "from-orange-500/20 to-amber-500/10",
     badge: "E-Commerce",
   },
