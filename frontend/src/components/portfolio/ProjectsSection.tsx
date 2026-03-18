@@ -148,7 +148,7 @@ export const ProjectsSection = () => (
                   🚀 Featured Project
                 </span>
                 <a
-                  href="https://github.com/kalpesh-odedara/DermAi.git"
+                  href="https://github.com/kalpesh-odedara/dermai.git"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-secondary text-muted-foreground hover:text-foreground border border-border/50 transition-colors"

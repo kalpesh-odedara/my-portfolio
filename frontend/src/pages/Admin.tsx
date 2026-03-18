@@ -31,7 +31,7 @@ const Admin = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (credentials.id === "ok" && credentials.password === "8956") {
+    if (credentials.id === "kalpeshmaher" && credentials.password === "992508") {
       setIsLoggedIn(true);
       toast({ title: "Welcome back, Kalpesh", description: "Access granted." });
     } else {
