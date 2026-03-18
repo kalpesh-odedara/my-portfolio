@@ -1,14 +1,12 @@
-```
 {
   "dataset": [
     { "question": "contact number", "answer": "You can reach Kalpesh at +91 93136 90610." },
     { "question": "phone", "answer": "Kalpesh's phone number is +91 93136 90610." },
     { "question": "email", "answer": "You can email Kalpesh at kalpeshodedra931@gmail.com." },
     { "question": "dermai project", "answer": "DermAI is an AI-powered smart hospital management system. You can view it on GitHub: https://github.com/kalpesh-odedara/dermai.git" },
-    { "question": "furniture shop project", "answer": "The Furniture Shop is an e-commerce platform built with ASP.NET and C#. You can view it on GitHub: https://github.com/kalpesh-odedara/Furniture-Shop.git" }
+    { "question": "furniture shop project", "answer": "The Furniture Shop is an e-commerce platform built with ASP.NET and C#. You can view it on GitHub: https://github.com/kalpesh-odedara/Furniture_Shop.git" }
   ],
   "profile": {
     "bio": "Full-Stack & AI Developer specializing in intelligent web solutions."
   }
 }
-```

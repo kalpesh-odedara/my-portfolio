@@ -65,7 +65,7 @@ const otherProjects = [
     description:
       "An elegant online jewelry store with category-wise browsing — gold, silver, diamond, and more — complete with product listings, filtering, and a seamless checkout flow.",
     tech: ["ASP.NET", "C#", "SQL Server", "HTML", "CSS", "Bootstrap"],
-    github: "https://github.com/kalpesh-odedara/Jewelry_Shop.git",
+    github: "https://github.com/kalpesh-odedara/Jewelry-Shop.git",
     color: "from-yellow-500/20 to-pink-500/10",
     badge: "E-Commerce",
   },
